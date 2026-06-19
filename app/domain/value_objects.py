@@ -8,7 +8,7 @@ class ArtworkStatus(Enum):
 
 
 @dataclass(frozen=True)
-class ArtPalette:
+class ArtWorkPalette:
     red: int
     green: int
     blue: int
