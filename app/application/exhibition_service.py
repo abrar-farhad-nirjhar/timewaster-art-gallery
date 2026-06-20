@@ -1,18 +1,19 @@
-from app.domain.entities import CuratorExhibition, Exhibition
-from app.infrastructure.repositories.exhibition import CuratorExhibitionRepository
+from app.domain.entities import Exhibition
+from app.infrastructure.repositories.exhibition import ExhibitionRepository
 
 
-class CuratorExhibitionService:
-    def __init__(self, repo: CuratorExhibitionRepository):
-        self.repo = repo
-    
-    def create_curator_exhibition(
-            self, curator_exhibition: CuratorExhibition) -> CuratorExhibition:
-        self.repo.save(curator_exhibition)
-        return curator_exhibition
-    
-    def create_exhibition(self, curator_id: str, exhibition: Exhibition) -> Exhibition:
-        curator_exhibition = self.repo.get_by_curator_id(curator_id)
-        curator_exhibition.exhibitions.append(exhibition)
-        self.repo.save(curator_exhibition)
-        return exhibition
+class ExhibitionService:
+    def __init__(self):
+        self.repo = ExhibitionRepository()
+
+    def get_exhibition(self, curator_id: str, exhibition_id: str) -> Exhibition:
+        return self.repo.get_by_id(curator_id, exhibition_id)
+
+    def get_exhibitions(self, curator_id: str) -> list[Exhibition]:
+        return self.repo.get_exhibitions_by_curator(curator_id)
+
+    def create_exhibition(self, exhibition: Exhibition) -> Exhibition:
+        return self.repo.create_exhibition(exhibition)
+
+    def delete_exhibition(self, curator_id: str, exhibition_id: str) -> None:
+        self.repo.delete_exhibition(curator_id, exhibition_id)

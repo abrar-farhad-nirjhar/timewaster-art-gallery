@@ -1,22 +1,20 @@
 from apiflask import fields
 from apiflask.schemas import Schema
 
-class ArtPaletteSchema(Schema):
-    red = fields.Integer(required=True)
-    green = fields.Integer(required=True)
-    blue = fields.Integer(required=True)
-
-class ArtResponseSchema(Schema):
-    title = fields.String(required=True)
-    s3_key = fields.String(required=True)
-    status = fields.String(required=True)
-    palette = fields.Nested(ArtPaletteSchema, required=False)
-
 
 class ExhibitionRequestSchema(Schema):
-    exhibition_title = fields.String(required=True)
+    exhibition_name = fields.String(required=True, data_key="exhibition-name")
+    exhibition_description = fields.String(
+        required=False, data_key="exhibition-description"
+    )
+
 
 class ExhibitionResponseSchema(Schema):
-    exhibition_id = fields.String(required=True)
-    exhibition_title = fields.String(required=True)
-    arts = fields.List(fields.Nested(ArtResponseSchema), required=True)
+    exhibition_id = fields.UUID(required=True, data_key="exhibition-id", dump_only=True)
+    curator_id = fields.UUID(required=True, data_key="curator-id", dump_only=True)
+    exhibition_name = fields.String(
+        required=True, data_key="exhibition-name", dump_only=True
+    )
+    exhibition_description = fields.String(
+        required=False, data_key="exhibition-description", dump_only=True
+    )

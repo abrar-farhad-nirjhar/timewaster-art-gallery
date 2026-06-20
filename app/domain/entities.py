@@ -19,6 +19,10 @@ class Curator:
             curator_name=model.curator_name,
         )
 
+    @classmethod
+    def from_request(cls, curator: dict) -> "Curator":
+        return cls(curator_name=curator["curator_name"])
+
 
 @dataclass
 class Exhibition:
@@ -34,6 +38,14 @@ class Exhibition:
             curator_id=model.curator_id,
             exhibition_name=model.exhibition_name,
             exhibition_description=model.exhibition_description,
+        )
+
+    @classmethod
+    def from_request(cls, exhibition: dict, curator_id: str) -> "Exhibition":
+        return cls(
+            curator_id=curator_id,
+            exhibition_name=exhibition["exhibition_name"],
+            exhibition_description=exhibition.get("exhibition_description"),
         )
 
 

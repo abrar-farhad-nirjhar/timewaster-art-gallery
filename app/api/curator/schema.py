@@ -1,8 +1,11 @@
-from apiflask.schemas import Schema
 from apiflask import fields
-from app.api.exhibition.schema import ExhibitionResponseSchema
+from apiflask.schemas import Schema
+
+
+class CuratorRequestSchema(Schema):
+    curator_name = fields.String(data_key="curator-name", required=True)
 
 
 class CuratorResponseSchema(Schema):
-    curator_id = fields.String(required=True)
-    exhibitions = fields.List(fields.Nested(ExhibitionResponseSchema), required=True)
+    curator_id = fields.UUID(data_key="curator-id", required=True, dump_only=True)
+    curator_name = fields.UUID(data_key="curator-name", required=True, dump_only=True)
