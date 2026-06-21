@@ -1,3 +1,5 @@
+from apiflask.schemas import EmptySchema
+
 from app.api.blueprint import blueprint as bp
 from app.api.exhibition.schema import ExhibitionRequestSchema, ExhibitionResponseSchema
 from app.application.exhibition_service import ExhibitionService
@@ -29,7 +31,7 @@ def get_exhibition(curator_id: str, exhibition_id: str):
 
 
 @bp.delete("/curator/<curator_id>/exhibitions/<exhibition_id>")
-@bp.output(status_code=204)
+@bp.output(EmptySchema, status_code=204)
 def delete_exhibition(curator_id: str, exhibition_id: str):
     service = ExhibitionService()
     service.delete_exhibition(curator_id, exhibition_id)

@@ -2,7 +2,6 @@ from pynamodb.attributes import MapAttribute, NumberAttribute, UnicodeAttribute
 from pynamodb.indexes import AllProjection, GlobalSecondaryIndex
 from pynamodb.models import Model
 
-from app.domain.entities import ArtWork
 from config import config
 
 
@@ -37,18 +36,3 @@ class ArtWorkModel(Model):
     palette = ArtColorPaletteModel()
 
     owner_index = OwnerGSI()
-
-    @classmethod
-    def from_entity(cls, artwork: ArtWork) -> "ArtWorkModel":
-        return cls(
-            artwork_id=artwork.artwork_id,
-            owner=artwork.owner,
-            title=artwork.title,
-            s3_key=artwork.s3_key,
-            status=artwork.status.value,
-            palette=ArtColorPaletteModel(
-                red=artwork.palette.red,
-                green=artwork.palette.green,
-                blue=artwork.palette.blue,
-            ),
-        )

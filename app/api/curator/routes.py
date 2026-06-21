@@ -1,3 +1,5 @@
+from apiflask.schemas import EmptySchema
+
 from app.api.blueprint import blueprint as bp
 from app.api.curator.schema import CuratorRequestSchema, CuratorResponseSchema
 from app.application.curator_service import CuratorService
@@ -28,7 +30,7 @@ def get_curator(curator_id: str):
 
 
 @bp.delete("/curator/<curator_id>")
-@bp.output(status_code=204)
+@bp.output(EmptySchema, status_code=204)
 def delete_curator(curator_id: str):
     service = CuratorService()
     service.delete_curator(curator_id)

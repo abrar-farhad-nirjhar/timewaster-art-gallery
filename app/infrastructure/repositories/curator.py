@@ -1,19 +1,23 @@
 from app.domain.entities import Curator
+from app.helpers.translators import Translator
 from app.infrastructure.models.curator import CuratorModel
 
 
 class CuratorRepository:
+    def __init__(self) -> None:
+        self.translator = Translator.get_translator(CuratorModel)
+
     def get_curators(self) -> list[Curator]:
         curators = []
         for curator_model in CuratorModel.scan():
-            curators.append(Curator.from_model(curator_model))
+            curators.append(self.translator.model_to_entity(curator_model))
         return curators
 
     def get_by_id(self, curator_id: str) -> Curator:
-        return Curator.from_model(CuratorModel.get(curator_id))
+        return self.translator.model_to_entity(CuratorModel.get(curator_id))
 
     def create_curator(self, curator: Curator) -> Curator:
-        CuratorModel.from_entity(curator).save()
+        self.translator.entity_to_model(curator).save()
         return curator
 
     def update_curator(self, curator: Curator) -> Curator:

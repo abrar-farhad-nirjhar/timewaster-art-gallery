@@ -1,10 +1,14 @@
 from app.domain.entities import Exhibition
+from app.helpers.translators import Translator
 from app.infrastructure.models.exhibition import ExhibitionModel
 
 
 class ExhibitionRepository:
+    def __init__(self) -> None:
+        self.translator = Translator.get_translator(ExhibitionModel)
+
     def get_by_id(self, curator_id: str, exhibition_id: str) -> Exhibition:
-        return Exhibition.from_model(
+        return self.translator.model_to_entity(
             ExhibitionModel.get(
                 hash_key=exhibition_id,
                 range_key=curator_id,
@@ -13,12 +17,12 @@ class ExhibitionRepository:
 
     def get_exhibitions_by_curator(self, curator_id: str) -> list[Exhibition]:
         return [
-            Exhibition.from_model(exhibition_model)
+            self.translator.model_to_entity(exhibition_model)
             for exhibition_model in ExhibitionModel.curator_index.query(curator_id)
         ]
 
     def create_exhibition(self, exhibition: Exhibition) -> Exhibition:
-        ExhibitionModel.from_entity(exhibition).save()
+        self.translator.entity_to_model(exhibition).save()
         return exhibition
 
     def update_exhibition(self, exhibition: Exhibition) -> Exhibition:

@@ -2,7 +2,6 @@ from pynamodb.attributes import UnicodeAttribute
 from pynamodb.indexes import AllProjection, GlobalSecondaryIndex
 from pynamodb.models import Model
 
-from app.domain.entities import Exhibition
 from config import config
 
 
@@ -25,12 +24,3 @@ class ExhibitionModel(Model):
     exhibition_description = UnicodeAttribute(null=True)
 
     curator_index = CuratorGSI()
-
-    @classmethod
-    def from_entity(cls, exhibition: Exhibition) -> "ExhibitionModel":
-        return cls(
-            exhibition_id=exhibition.exhibition_id,
-            curator_id=exhibition.curator_id,
-            exhibition_name=exhibition.exhibition_name,
-            exhibition_description=exhibition.exhibition_description,
-        )
